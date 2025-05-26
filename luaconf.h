@@ -225,9 +225,26 @@
 #define HIG_LDIR	HIG_ROOT "share/lua/" LUA_VDIR "/"
 #define HIG_CDIR	HIG_ROOT "lib/lua/" LUA_VDIR "/"
 
+#ifdef GWC_DK1
+	#define HIG_CORE_SUFFIX ".core"
+	#define HIG_LDIR_CORE   HIG_ROOT "share/lua/" LUA_VDIR HIG_CORE_SUFFIX "/"
+	#define HIG_CDIR_CORE   HIG_ROOT "lib/lua/" LUA_VDIR HIG_CORE_SUFFIX "/"
+
+	#define HIG_CORE_PATH \
+		HIG_LDIR_CORE "?.lua;" HIG_LDIR_CORE "?/init.lua;" \
+		HIG_CDIR_CORE "?.lua;" HIG_CDIR_CORE "?/init.lua;"
+
+	#define HIG_CORE_CPATH \
+		HIG_CDIR_CORE "?.so;" HIG_CDIR_CORE "?/init.so;"
+#else
+	#define HIG_CORE_PATH  ""
+	#define HIG_CORE_CPATH ""
+#endif
+
 #define LUA_PATH_DEFAULT  \
 		LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
 		LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua;" \
+		HIG_CORE_PATH                           \
 		HIG_LDIR"?.lua;"  HIG_LDIR"?/init.lua;" \
 		HIG_CDIR"?.lua;"  HIG_CDIR"?/init.lua;" \
 		"./?.lua;" "./?/init.lua;"
@@ -235,7 +252,8 @@
 #if !defined(LUA_CPATH_DEFAULT)
 #define LUA_CPATH_DEFAULT \
 		LUA_CDIR"?.so;" LUA_CDIR"loadall.so;" \
-		HIG_CDIR"?.so;" HIG_CDIR"?/init.so;" \
+		HIG_CORE_CPATH                        \
+		HIG_CDIR"?.so;" HIG_CDIR"?/init.so;"  \
 		"./?.so;"
 #endif
 
@@ -789,4 +807,3 @@
 
 
 #endif
-
